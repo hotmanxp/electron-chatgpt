@@ -1,12 +1,9 @@
-// src/chatgpt-api.ts
 import Keyv from "keyv";
-// import pTimeout from "p-timeout";
-import QuickLRU from "quick-lru";
+import QuickLRU from "./vendor/quick-lru";
 import * as uuid from "uuid";
-// { v4 as  }
 
 const uuidv4 = uuid.v4
-const uuidv42 = uuidv4
+// const uuidv42 = uuidv4
 
 // src/tokenizer.ts
 import * as tiktoken from "@dqbd/tiktoken";
@@ -115,7 +112,7 @@ var ChatGPTAPI = class {
       completionParams,
       systemMessage,
       maxModelTokens = 4e3,
-      maxResponseTokens = 1e3,
+      maxResponseTokens = 4e3,
       getMessageById,
       upsertMessage,
       fetch: fetch2 = fetch
@@ -469,210 +466,7 @@ ${message.content}`]);
   }
 };
 
-// src/chatgpt-unofficial-proxy-api.ts
-// import pTimeout2 from "p-timeout";
-
-
-// src/utils.ts
-var uuidv4Re = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-function isValidUUIDv4(str) {
-  return str && uuidv4Re.test(str);
-}
-
-// src/chatgpt-unofficial-proxy-api.ts
-var ChatGPTUnofficialProxyAPI = class {
-  /**
-   * @param fetch - Optional override for the `fetch` implementation to use. Defaults to the global `fetch` function.
-   */
-  constructor(opts) {
-    const {
-      accessToken,
-      apiReverseProxyUrl = "https://chat.duti.tech/api/conversation",
-      model = "text-davinci-002-render-sha",
-      debug = false,
-      headers,
-      fetch: fetch2 = fetch
-    } = opts;
-    this._accessToken = accessToken;
-    this._apiReverseProxyUrl = apiReverseProxyUrl;
-    this._debug = !!debug;
-    this._model = model;
-    this._fetch = fetch2;
-    this._headers = headers;
-    if (!this._accessToken) {
-      throw new Error("ChatGPT invalid accessToken");
-    }
-    if (!this._fetch) {
-      throw new Error("Invalid environment; fetch is not defined");
-    }
-    if (typeof this._fetch !== "function") {
-      throw new Error('Invalid "fetch" is not a function');
-    }
-  }
-  get accessToken() {
-    return this._accessToken;
-  }
-  set accessToken(value) {
-    this._accessToken = value;
-  }
-  /**
-   * Sends a message to ChatGPT, waits for the response to resolve, and returns
-   * the response.
-   *
-   * If you want your response to have historical context, you must provide a valid `parentMessageId`.
-   *
-   * If you want to receive a stream of partial responses, use `opts.onProgress`.
-   * If you want to receive the full response, including message and conversation IDs,
-   * you can use `opts.onConversationResponse` or use the `ChatGPTAPI.getConversation`
-   * helper.
-   *
-   * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI completions API. You can override the `promptPrefix` and `promptSuffix` in `opts` to customize the prompt.
-   *
-   * @param message - The prompt message to send
-   * @param opts.conversationId - Optional ID of a conversation to continue (defaults to a random UUID)
-   * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
-   * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
-   * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
-   * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
-   * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
-   *
-   * @returns The response from ChatGPT
-   */
-  async sendMessage(text, opts = {}) {
-    if (!!opts.conversationId !== !!opts.parentMessageId) {
-      throw new Error(
-        "ChatGPTUnofficialProxyAPI.sendMessage: conversationId and parentMessageId must both be set or both be undefined"
-      );
-    }
-    if (opts.conversationId && !isValidUUIDv4(opts.conversationId)) {
-      throw new Error(
-        "ChatGPTUnofficialProxyAPI.sendMessage: conversationId is not a valid v4 UUID"
-      );
-    }
-    if (opts.parentMessageId && !isValidUUIDv4(opts.parentMessageId)) {
-      throw new Error(
-        "ChatGPTUnofficialProxyAPI.sendMessage: parentMessageId is not a valid v4 UUID"
-      );
-    }
-    if (opts.messageId && !isValidUUIDv4(opts.messageId)) {
-      throw new Error(
-        "ChatGPTUnofficialProxyAPI.sendMessage: messageId is not a valid v4 UUID"
-      );
-    }
-    const {
-      conversationId,
-      parentMessageId = uuidv42(),
-      messageId = uuidv42(),
-      action = "next",
-      timeoutMs,
-      onProgress
-    } = opts;
-    let { abortSignal } = opts;
-    let abortController = null;
-    if (timeoutMs && !abortSignal) {
-      abortController = new AbortController();
-      abortSignal = abortController.signal;
-    }
-    const body = {
-      action,
-      messages: [
-        {
-          id: messageId,
-          role: "user",
-          content: {
-            content_type: "text",
-            parts: [text]
-          }
-        }
-      ],
-      model: this._model,
-      parent_message_id: parentMessageId
-    };
-    if (conversationId) {
-      body.conversation_id = conversationId;
-    }
-    const result = {
-      role: "assistant",
-      id: uuidv42(),
-      parentMessageId: messageId,
-      conversationId,
-      text: ""
-    };
-    const responseP = new Promise((resolve, reject) => {
-      const url = this._apiReverseProxyUrl;
-      const headers = {
-        ...this._headers,
-        Authorization: `Bearer ${this._accessToken}`,
-        Accept: "text/event-stream",
-        "Content-Type": "application/json"
-      };
-      if (this._debug) {
-        console.log("POST", url, { body, headers });
-      }
-      fetchSSE(
-        url,
-        {
-          method: "POST",
-          headers,
-          body: JSON.stringify(body),
-          signal: abortSignal,
-          onMessage: (data) => {
-            var _a, _b, _c;
-            if (data === "[DONE]") {
-              return resolve(result);
-            }
-            try {
-              const convoResponseEvent = JSON.parse(data);
-              if (convoResponseEvent.conversation_id) {
-                result.conversationId = convoResponseEvent.conversation_id;
-              }
-              if ((_a = convoResponseEvent.message) == null ? void 0 : _a.id) {
-                result.id = convoResponseEvent.message.id;
-              }
-              const message = convoResponseEvent.message;
-              if (message) {
-                let text2 = (_c = (_b = message == null ? void 0 : message.content) == null ? void 0 : _b.parts) == null ? void 0 : _c[0];
-                if (text2) {
-                  result.text = text2;
-                  if (onProgress) {
-                    onProgress(result);
-                  }
-                }
-              }
-            } catch (err) {
-            }
-          }
-        },
-        this._fetch
-      ).catch((err) => {
-        const errMessageL = err.toString().toLowerCase();
-        if (result.text && (errMessageL === "error: typeerror: terminated" || errMessageL === "typeerror: terminated")) {
-          return resolve(result);
-        } else {
-          return reject(err);
-        }
-      });
-    });
-    if (timeoutMs) {
-      if (abortController) {
-        ;
-        responseP.cancel = () => {
-          abortController.abort();
-        };
-      }
-      return pTimeout2(responseP, {
-        milliseconds: timeoutMs,
-        message: "ChatGPT timed out waiting for response"
-      });
-    } else {
-      return responseP;
-    }
-  }
-};
 export {
   ChatGPTAPI,
   ChatGPTError,
-  ChatGPTUnofficialProxyAPI,
-  openai
 };
-//# sourceMappingURL=index.js.map

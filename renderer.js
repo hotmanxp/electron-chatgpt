@@ -101,10 +101,19 @@ const ask = async (prompt) => {
   }
 }
 
+const inputEle = document.getElementById('input-el')
 
-document.getElementById('ask-button').addEventListener('click', () => {
-  const inputText = document.getElementById('input-el').value
-  ask(inputText)
+const promte = async () => {
+  const inputText = inputEle.value
+  inputEle.value = ''
+  document.getElementById('res-contain').innerHTML = 'Waiting...'
+  await ask(inputText)
+}
+
+document.getElementById('ask-button').addEventListener('click', promte)
+inputEle.addEventListener('keyup', (ev) => {
+  if(ev.code == 'Enter') {
+    promte()
+  }
 })
 
-console.log('call==>', window.callAppHanddle)
