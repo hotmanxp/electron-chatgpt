@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "type": "module",
   "main": "index.cjs",
-  "module" : "main.mjs",
+  "module" : "main.cjs",
   "scripts": {
     "start": "electron ."
   },
@@ -25,6 +25,14 @@
     "chatgpt": "^5.0.9",
     "esm": "^3.2.25",
     "node-fetch": "^3.3.0",
-    "quick-lru": "^6.1.1"
+    "quick-lru": "^6.1.1",
+    "@dqbd/tiktoken": "^0.4.0",
+    "cac": "^6.7.14",
+    "conf": "^11.0.1",
+    "eventsource-parser": "^0.0.5",
+    "keyv": "^4.5.2",
+    "p-timeout": "^6.1.1",
+    "read-pkg-up": "^9.1.0",
+    "uuid": "^9.0.0"
   }
 }

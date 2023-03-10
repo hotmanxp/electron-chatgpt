@@ -2,10 +2,15 @@
 import Keyv from "keyv";
 // import pTimeout from "p-timeout";
 import QuickLRU from "quick-lru";
-import { v4 as uuidv4 } from "uuid";
+import * as uuid from "uuid";
+// { v4 as  }
+
+const uuidv4 = uuid.v4
+const uuidv42 = uuidv4
 
 // src/tokenizer.ts
-import { get_encoding } from "@dqbd/tiktoken";
+import * as tiktoken from "@dqbd/tiktoken";
+const { get_encoding } = tiktoken
 var tokenizer = get_encoding("cl100k_base");
 function encode(input) {
   return tokenizer.encode(input);
@@ -22,7 +27,8 @@ var openai;
 var fetch = globalThis.fetch;
 
 // src/fetch-sse.ts
-import { createParser } from "eventsource-parser";
+import * as parser from "eventsource-parser";
+const { createParser } = parser
 
 // src/stream-async-iterable.ts
 async function* streamAsyncIterable(stream) {
@@ -155,6 +161,7 @@ Current date: ${currentDate}`;
   }
 
   async getMessages(text) {
+    const opts = {}
     const {
       parentMessageId,
       messageId = uuidv4(),
@@ -464,7 +471,7 @@ ${message.content}`]);
 
 // src/chatgpt-unofficial-proxy-api.ts
 // import pTimeout2 from "p-timeout";
-import { v4 as uuidv42 } from "uuid";
+
 
 // src/utils.ts
 var uuidv4Re = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

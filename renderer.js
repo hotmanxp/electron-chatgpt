@@ -33,9 +33,13 @@ const messages = [
 const ask = async (prompt) => {
 
   if(window.callAppHanddle) {
-    const fetchOptions = await window.callAppHanddle({
-      type: 'getFetchParams'
+    const message = JSON.stringify({
+      type: 'getFetchParams',
+      params: { text: prompt }
     })
+
+    const fetchOptions = await window.callAppHanddle(message)
+
 
       fetch(url, {
         headers: fetchOptions.headers,

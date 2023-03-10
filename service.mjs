@@ -5,9 +5,7 @@ import electron  from 'electron'
 
 const { ipcMain } = electron
 
-const apiKey = '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'
-
-
+const apiKey = process.env.OPEN_AI_KEY
 
 
 const gpt = new ChatGPTAPI({
@@ -15,7 +13,8 @@ const gpt = new ChatGPTAPI({
   fetch: () => {},
   debug: false
 })
-ipcMain.handle('fetchMessage', async (message) => {
+ipcMain.handle('fetchMessage', async (e, message) => {
+  // const message = e.data
 
   const {type, params} = JSON.parse(message)
   if(type === 'getFetchParams') {

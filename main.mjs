@@ -3,7 +3,7 @@
 import * as path from 'path'
 
 import electron from 'electron'
-// import './service.mjs'
+import './service.mjs'
 
 const { app, BrowserWindow } = electron
 
