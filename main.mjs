@@ -3,37 +3,9 @@
 import * as path from 'path'
 
 import electron from 'electron'
+// import './service.mjs'
 
-
-const { app, BrowserWindow, ipcMain } = electron
-
-import { ChatGPTAPI } from './gpt.mjs'
-
-
-
-
-const apiKey = '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'
-
-
-
-
-const gpt = new ChatGPTAPI({
-  apiKey: apiKey,
-  fetch: () => {},
-  debug: false
-})
-ipcMain.handle('fetchMessage', async (message) => {
-
-  const {type, params} = JSON.parse(message)
-  if(type === 'getFetchParams') {
-    return await gpt.getMessages(params.text)
-  }
-  if(type === 'setRes') {
-    return await gpt._upsertMessage(params)
-  }
-  
-})
-
+const { app, BrowserWindow } = electron
 
 function createWindow () {
   // Create the browser window.
