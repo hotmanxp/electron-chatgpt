@@ -1,0 +1,26 @@
+/* styles.css */
+
+/* Add styles here to customize the appearance of your app */
+
+input {
+  width: 60%;
+  margin-right: 20px;
+  line-height: 24px;
+}
+
+button {
+  width: 100px;
+  text-align: center;
+  background-color: aquamarine;
+  line-height: 24px;
+  font-size: 16px;
+  border: none;
+  padding: 2px 0;
+  cursor: pointer;
+}
+.action-div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-top: 10px;
+}
