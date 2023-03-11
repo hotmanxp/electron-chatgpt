@@ -37,7 +37,7 @@ const insertLog = (log) => {
   const logEle = document.createElement('div')
   logEle.className = 'talk-container'
   logEle.innerHTML = `<div class="${isMe ? 'me': 'gpt'}">
-    <div class="bg" >${log.name}:</div>
+    <div class="bg" >${log.name}</div>
     <div class="log-text">${htmlContent}</div>
   </div>
 `
@@ -72,7 +72,7 @@ const ask = async (prompt) => {
         const reply = res.choices[0].message
         window.callAppHanddle(JSON.stringify({type :'setRes', params: {id: res.id, ...reply}}))
 
-        document.getElementById('loading').innerHTML = ''
+        document.getElementById('global-loading').classList.remove('loading')
         insertLog({...reply, name: 'ChatGPT'})
       })
       .catch(e => {
@@ -88,7 +88,7 @@ const inputEle = document.getElementById('input-el')
 const promte = async () => {
   const inputText = inputEle.value
   inputEle.value = ''
-  document.getElementById('loading').innerHTML = 'Waiting...'
+  document.getElementById('global-loading').classList.add('loading')
   await ask(inputText)
 }
 

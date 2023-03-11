@@ -2,20 +2,34 @@
 
 /* Add styles here to customize the appearance of your app */
 
+.logContainer {
+  /* background-color: #343541; */
+  min-height: calc(100vh - 250px);;
+}
+
 input {
   width: 60%;
   margin-right: 20px;
   line-height: 24px;
 }
 
+input:focus {
+  /* appearance: none; */
+  outline-color: #10a37f;
+  box-shadow: none;
+  /* border-color: #10a37f!important; */
+}
+
 button {
+  color: white;
   width: 100px;
   text-align: center;
-  background-color: #338fe3;
+  background-color: #10a37f;
   line-height: 24px;
   font-size: 16px;
   border: none;
-  padding: 2px 0;
+  padding: 3px 0;
+  border-radius: 2px;
   cursor: pointer;
 }
 .action-div {
@@ -40,6 +54,11 @@ button {
   text-align: right;
 }
 
+.bg {
+  padding: 0 10px;
+  font-weight: bold;
+}
+
 .gpt .bg {
   background-color: lightskyblue;
 }
@@ -59,7 +78,31 @@ button {
 }
 
 .talk-container {
-  margin-bottom: 15px;
+  margin: 15px 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100vh;
+}
+
+.loading .spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  border-top-color: #777;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /*!

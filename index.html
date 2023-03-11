@@ -10,21 +10,24 @@
     <title>ChatGPT World!</title>
   </head>
   <body>
-    <h3>Welcome to ChatGPT World</h3>
-    <div>
-      <span>Ask Me anything. </span>
-      <span id="loading"></span>
+    <div class="header">
+      <h3>Welcome to ChatGPT World</h3>
+      <div>
+        <span>Ask Me anything. </span>
+        <span id="loading"></span>
+      </div>
     </div>
+  
     <div class="action-div">
       <input id="input-el" placeholder="Input Your Question" />
       <button id="ask-button">Send</button>
     </div>
     <div id="res-contain" class="hljs language-markdown logContainer"></div>
+    <div id="global-loading">
+      <div class="spinner"></div>
+    </div>
     
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
-    <script>
-      hljs.highlightAll()
-    </script>
   </body>
 </html>
