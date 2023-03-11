@@ -4,7 +4,7 @@
 
 .logContainer {
   /* background-color: #343541; */
-  min-height: calc(100vh - 180px);
+  min-height: calc(100vh - 145px);
 }
 
 .tips {
@@ -54,7 +54,7 @@ button {
 
 .logContainer {
   margin-top: 10px;
-  max-height: calc(100vh - 110px);
+  max-height: calc(100vh - 140px);
   padding: 0 10px;
   overflow-y: auto;
 }
