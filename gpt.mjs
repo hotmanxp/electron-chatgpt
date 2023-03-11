@@ -13,6 +13,9 @@ function encode(input) {
   return tokenizer.encode(input);
 }
 
+let lastRespondMessageId
+let lastSentMessageId
+
 // src/types.ts
 var ChatGPTError = class extends Error {
 };
@@ -112,7 +115,7 @@ var ChatGPTAPI = class {
       completionParams,
       systemMessage,
       maxModelTokens = 4e3,
-      maxResponseTokens = 4e3,
+      maxResponseTokens = 1e3,
       getMessageById,
       upsertMessage,
       fetch: fetch2 = fetch
@@ -157,8 +160,7 @@ Current date: ${currentDate}`;
     }
   }
 
-  async getMessages(text) {
-    const opts = {}
+  async getMessages(text, opts = {}) {
     const {
       parentMessageId,
       messageId = uuidv4(),
@@ -178,6 +180,8 @@ Current date: ${currentDate}`;
       parentMessageId,
       text
     };
+    lastSentMessageId = messageId
+  
     await this._upsertMessage(message);
     const { messages, maxTokens, numTokens } = await this._buildMessages(
       text,
@@ -206,7 +210,8 @@ Current date: ${currentDate}`;
   }
 
   async setRes(response) {
-    this._upsertMessage(response);
+    lastRespondMessageId = response.id
+    this._upsertMessage({ ...response, parentMessageId: lastSentMessageId });
   }
 
   /**
@@ -405,6 +410,7 @@ Current date: ${currentDate}`;
       }
     ]) : messages;
     let numTokens = 0;
+
     do {
       const prompt = nextMessages.reduce((prompt2, message) => {
         switch (message.role) {
@@ -440,7 +446,7 @@ ${message.content}`]);
       nextMessages = nextMessages.slice(0, systemMessageOffset).concat([
         {
           role: parentMessageRole,
-          content: parentMessage.text,
+          content: parentMessage.text || parentMessage.content,
           name: parentMessage.name
         },
         ...nextMessages.slice(systemMessageOffset)
@@ -462,6 +468,7 @@ ${message.content}`]);
     return res;
   }
   async _defaultUpsertMessage(message) {
+    
     await this._messageStore.set(message.id, message);
   }
 };

@@ -5,20 +5,26 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"> -->
     <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
+    <script src="./hljs.js"></script>
+    <script src="./marked.min.4.2.12.js"></script>
+    <title>ChatGPT World!</title>
   </head>
   <body>
-    <h1>Welcome to ChatGPT World</h1>
-    <div>Ask Me any thing</div>
+    <h3>Welcome to ChatGPT World</h3>
+    <div>
+      <span>Ask Me anything. </span>
+      <span id="loading"></span>
+    </div>
     <div class="action-div">
       <input id="input-el" placeholder="Input Your Question" />
       <button id="ask-button">Send</button>
     </div>
-    <div id="res-contain">
-
-    </div>
-
+    <div id="res-contain" class="hljs language-markdown logContainer"></div>
+    
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
+    <script>
+      hljs.highlightAll()
+    </script>
   </body>
 </html>

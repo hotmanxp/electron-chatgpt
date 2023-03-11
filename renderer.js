@@ -9,7 +9,7 @@
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 const url = 'https://api.openai.com/v1/chat/completions'
 let lastMessageId = null
-const key = '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'
+const key = ''
 
 const headers = {
   'Content-Type': 'application/json',
@@ -30,17 +30,36 @@ const messages = [
   }
 ]
 
+const insertLog = (log) => {
+  const ele = document.getElementById('res-contain')
+  const htmlContent = window.marked.marked(log.content);
+  const isMe = log.name === 'Me'
+  const logEle = document.createElement('div')
+  logEle.className = 'talk-container'
+  logEle.innerHTML = `<div class="${isMe ? 'me': 'gpt'}">
+    <div class="bg" >${log.name}:</div>
+    <div class="log-text">${htmlContent}</div>
+  </div>
+`
+
+  ele.appendChild(logEle)
+  // Highlight code blocks using hljs
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+  ele.scrollTo(0, ele.scrollHeight - ele.clientHeight)
+}
+
 const ask = async (prompt) => {
 
   if(window.callAppHanddle) {
     const message = JSON.stringify({
       type: 'getFetchParams',
-      params: { text: prompt }
+      params: { text: prompt, parentMessageId: lastMessageId }
     })
 
     const fetchOptions = await window.callAppHanddle(message)
-
-
+      insertLog({name: 'Me', content: prompt})
       fetch(url, {
         headers: fetchOptions.headers,
         method: 'POST',
@@ -48,56 +67,19 @@ const ask = async (prompt) => {
       })
       .then(res => res.json())
       .then(res => {
-        console.log(res) 
+        console.log(res)
+        lastMessageId = res.id
         const reply = res.choices[0].message
-        window.callAppHanddle('setRes', reply)
-        const lines = reply.content.split('\n')
-        .map(c => `<div>${c}</div>`)
-        document.getElementById('res-contain').innerHTML = lines.join('')
+        window.callAppHanddle(JSON.stringify({type :'setRes', params: {id: res.id, ...reply}}))
+
+        document.getElementById('loading').innerHTML = ''
+        insertLog({...reply, name: 'ChatGPT'})
       })
       .catch(e => {
         console.log(e)
       })
 
     return
-  }
-  
-  messages.push({
-    role: 'user',
-    content: prompt,
-    name: undefined,
-  })
-
-  const body = {
-    max_tokens: 4000,
-    model: CHATGPT_MODEL,
-    temperature: 0.8,
-    top_p: 1.0,
-    presence_penalty: 1.0,
-    messages: messages.slice(-2)
-  }
-  try {
-    fetch(url, {
-      headers,
-      method: 'POST',
-      body: JSON.stringify(body)
-    })
-    .then(res => res.json())
-    .then(res => {
-      console.log(res)
-      lastMessageId = res.id
-     
-      const reply = res.choices[0].message
-      messages.push(reply)
-      const lines = reply.content.split('\n')
-      .map(c => `<div>${c}</div>`)
-      document.getElementById('res-contain').innerHTML = lines.join('')
-    })
-    .catch(e => {
-      console.log(e)
-    })
-  } catch (e) {
-    window.alert(e)
   }
 }
 
@@ -106,7 +88,7 @@ const inputEle = document.getElementById('input-el')
 const promte = async () => {
   const inputText = inputEle.value
   inputEle.value = ''
-  document.getElementById('res-contain').innerHTML = 'Waiting...'
+  document.getElementById('loading').innerHTML = 'Waiting...'
   await ask(inputText)
 }
 
