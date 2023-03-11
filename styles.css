@@ -44,9 +44,11 @@ button {
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
-  border: 1px solid lightblue;
+  /* border: 1px solid lightblue; */
   padding: 15px 10px;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
+  background-color: hsl(235, 13%, 37%);
+  color: white;
   border-radius: 4px;
 }
 
