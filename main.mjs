@@ -1,8 +1,7 @@
 // Modules to control application life and create native browser window
-// import './service'
 import * as path from 'path'
-
 import electron from 'electron'
+
 import './service.mjs'
 
 const { app, BrowserWindow } = electron

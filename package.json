@@ -4,9 +4,10 @@
   "description": "A minimal Electron application",
   "type": "module",
   "main": "index.cjs",
-  "module" : "main.cjs",
+  "module": "main.cjs",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -19,19 +20,20 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^23.1.2"
+    "electron": "^23.1.2",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
-    "chatgpt": "^5.0.9",
-    "esm": "^3.2.25",
-    "node-fetch": "^3.3.0",
-    "quick-lru": "^6.1.1",
     "@dqbd/tiktoken": "^0.4.0",
     "cac": "^6.7.14",
+    "chatgpt": "^5.0.9",
     "conf": "^11.0.1",
+    "esm": "^3.2.25",
     "eventsource-parser": "^0.0.5",
     "keyv": "^4.5.2",
+    "node-fetch": "^3.3.0",
     "p-timeout": "^6.1.1",
+    "quick-lru": "^6.1.1",
     "read-pkg-up": "^9.1.0",
     "uuid": "^9.0.0"
   }

@@ -9,26 +9,6 @@
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 const url = 'https://api.openai.com/v1/chat/completions'
 let lastMessageId = null
-const key = ''
-
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${key}`
-}
-
-let systemMessage
-
-if (systemMessage === undefined) {
-  const currentDate = new Date().toISOString().split('T')[0]
-  systemMessage = `You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.\nKnowledge cutoff: 2021-09-01\nCurrent date: ${currentDate}`
-}
-
-const messages = [
-  {
-    role: 'system',
-    content: systemMessage
-  }
-]
 
 const insertLog = (log) => {
   const ele = document.getElementById('res-contain')
@@ -77,6 +57,9 @@ const ask = async (prompt) => {
       })
       .catch(e => {
         console.log(e)
+        document.getElementById('global-loading').classList.remove('loading')
+        window.alert(`网络错误${e}`)
+
       })
 
     return

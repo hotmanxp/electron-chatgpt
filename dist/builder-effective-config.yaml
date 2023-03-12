@@ -1,0 +1,13 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.example.my-electron-app
+productName: My Electron App
+mac:
+  category: public.app-category.developer-tools
+  icon: build/icon.icns
+win:
+  target: nsis
+  icon: build/icon.ico
+files: []
+electronVersion: 23.1.3

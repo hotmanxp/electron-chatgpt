@@ -1,97 +1,24 @@
-import Keyv from "keyv";
-import QuickLRU from "./vendor/quick-lru";
-import * as uuid from "uuid";
+import Keyv from "keyv"
+import * as uuid from "uuid"
+import * as tiktoken from "@dqbd/tiktoken"
+
+import QuickLRU from "./vendor/quick-lru"
 
 const uuidv4 = uuid.v4
-// const uuidv42 = uuidv4
-
-// src/tokenizer.ts
-import * as tiktoken from "@dqbd/tiktoken";
 const { get_encoding } = tiktoken
-var tokenizer = get_encoding("cl100k_base");
+const tokenizer = get_encoding("cl100k_base")
+
+
 function encode(input) {
   return tokenizer.encode(input);
 }
 
-let lastRespondMessageId
 let lastSentMessageId
-
-// src/types.ts
-var ChatGPTError = class extends Error {
-};
-var openai;
-((openai2) => {
-})(openai || (openai = {}));
-
-// src/fetch.ts
-var fetch = globalThis.fetch;
-
-// src/fetch-sse.ts
-import * as parser from "eventsource-parser";
-const { createParser } = parser
-
-// src/stream-async-iterable.ts
-async function* streamAsyncIterable(stream) {
-  const reader = stream.getReader();
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        return;
-      }
-      yield value;
-    }
-  } finally {
-    reader.releaseLock();
-  }
-}
-
-// src/fetch-sse.ts
-async function fetchSSE(url, options, fetch2 = fetch) {
-  const { onMessage, ...fetchOptions } = options;
-  const res = await fetch2(url, fetchOptions);
-  if (!res.ok) {
-    let reason;
-    try {
-      reason = await res.text();
-    } catch (err) {
-      reason = res.statusText;
-    }
-    const msg = `ChatGPT error ${res.status}: ${reason}`;
-    const error = new ChatGPTError(msg, { cause: res });
-    error.statusCode = res.status;
-    error.statusText = res.statusText;
-    throw error;
-  }
-  const parser = createParser((event) => {
-    if (event.type === "event") {
-      onMessage(event.data);
-    }
-  });
-  if (!res.body.getReader) {
-    const body = res.body;
-    if (!body.on || !body.read) {
-      throw new ChatGPTError('unsupported "fetch" implementation');
-    }
-    body.on("readable", () => {
-      let chunk;
-      while (null !== (chunk = body.read())) {
-        parser.feed(chunk.toString());
-      }
-    });
-  } else {
-    for await (const chunk of streamAsyncIterable(res.body)) {
-      const str = new TextDecoder().decode(chunk);
-      parser.feed(str);
-    }
-  }
-}
-
-// src/chatgpt-api.ts
-var CHATGPT_MODEL = "gpt-3.5-turbo";
-var USER_LABEL_DEFAULT = "User";
-var ASSISTANT_LABEL_DEFAULT = "ChatGPT";
-var ChatGPTAPI = class {
+let lastRespondMessageId
+const CHATGPT_MODEL = "gpt-3.5-turbo"
+const USER_LABEL_DEFAULT = "User"
+const ASSISTANT_LABEL_DEFAULT = "ChatGPT"
+const ChatGPTAPI = class {
   /**
    * Creates a new client wrapper around OpenAI's chat completion API, mimicing the official ChatGPT webapp's functionality as closely as possible.
    *
@@ -118,12 +45,10 @@ var ChatGPTAPI = class {
       maxResponseTokens = 1e3,
       getMessageById,
       upsertMessage,
-      fetch: fetch2 = fetch
-    } = opts;
-    this._apiKey = apiKey;
-    this._apiBaseUrl = apiBaseUrl;
-    this._debug = !!debug;
-    this._fetch = fetch2;
+    } = opts
+    this._apiKey = apiKey
+    this._apiBaseUrl = apiBaseUrl
+    this._debug = !!debug
     this._completionParams = {
       model: CHATGPT_MODEL,
       temperature: 0.8,
@@ -133,30 +58,24 @@ var ChatGPTAPI = class {
     };
     this._systemMessage = systemMessage;
     if (this._systemMessage === void 0) {
-      const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+      const currentDate = (new Date()).toISOString().split("T")[0]
       this._systemMessage = `You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
 Knowledge cutoff: 2021-09-01
-Current date: ${currentDate}`;
+Current date: ${currentDate}`
     }
-    this._maxModelTokens = maxModelTokens;
-    this._maxResponseTokens = maxResponseTokens;
-    this._getMessageById = getMessageById || this._defaultGetMessageById;
-    this._upsertMessage = upsertMessage ||  this._defaultUpsertMessage;
+    this._maxModelTokens = maxModelTokens
+    this._maxResponseTokens = maxResponseTokens
+    this._getMessageById = getMessageById || this._defaultGetMessageById
+    this._upsertMessage = upsertMessage ||  this._defaultUpsertMessage
     if (messageStore) {
       this._messageStore = messageStore;
     } else {
       this._messageStore = new Keyv({
         store: new QuickLRU({ maxSize: 1e4 })
-      });
+      })
     }
     if (!this._apiKey) {
-      throw new Error("OpenAI missing required apiKey");
-    }
-    if (!this._fetch) {
-      throw new Error("Invalid environment; fetch is not defined");
-    }
-    if (typeof this._fetch !== "function") {
-      throw new Error('Invalid "fetch" is not a function');
+      throw new Error("OpenAI missing required apiKey")
     }
   }
 
@@ -164,16 +83,11 @@ Current date: ${currentDate}`;
     const {
       parentMessageId,
       messageId = uuidv4(),
-      timeoutMs,
-      onProgress,
-      stream = onProgress ? true : false
+      // timeoutMs,
+      // onProgress,
+      // stream = onProgress ? true : false
     } = opts;
-    let { abortSignal } = opts;
-    let abortController = null;
-    if (timeoutMs && !abortSignal) {
-      abortController = new AbortController();
-      abortSignal = abortController.signal;
-    }
+ 
     const message = {
       role: "user",
       id: messageId,
@@ -182,17 +96,12 @@ Current date: ${currentDate}`;
     };
     lastSentMessageId = messageId
   
-    await this._upsertMessage(message);
+    await this._upsertMessage(message)
     const { messages, maxTokens, numTokens } = await this._buildMessages(
       text,
-      opts
-    );
-    const result = {
-      role: "assistant",
-      id: uuidv4(),
-      parentMessageId: messageId,
-      text: ""
-    };
+      opts,
+    )
+
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${this._apiKey}`
@@ -205,189 +114,24 @@ Current date: ${currentDate}`;
     };
     return ({
       headers,
-      body
+      body,
+      numTokens,
     })
   }
 
   async setRes(response) {
     lastRespondMessageId = response.id
-    this._upsertMessage({ ...response, parentMessageId: lastSentMessageId });
+    this._upsertMessage({ ...response, parentMessageId: lastSentMessageId })
   }
 
-  /**
-   * Sends a message to the OpenAI chat completions endpoint, waits for the response
-   * to resolve, and returns the response.
-   *
-   * If you want your response to have historical context, you must provide a valid `parentMessageId`.
-   *
-   * If you want to receive a stream of partial responses, use `opts.onProgress`.
-   *
-   * Set `debug: true` in the `ChatGPTAPI` constructor to log more info on the full prompt sent to the OpenAI chat completions API. You can override the `systemMessage` in `opts` to customize the assistant's instructions.
-   *
-   * @param message - The prompt message to send
-   * @param opts.parentMessageId - Optional ID of the previous message in the conversation (defaults to `undefined`)
-   * @param opts.messageId - Optional ID of the message to send (defaults to a random UUID)
-   * @param opts.systemMessage - Optional override for the chat "system message" which acts as instructions to the model (defaults to the ChatGPT system message)
-   * @param opts.timeoutMs - Optional timeout in milliseconds (defaults to no timeout)
-   * @param opts.onProgress - Optional callback which will be invoked every time the partial response is updated
-   * @param opts.abortSignal - Optional callback used to abort the underlying `fetch` call using an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
-   *
-   * @returns The response from ChatGPT
-   */
-  async sendMessage(text, opts = {}) {
-    const {
-      parentMessageId,
-      messageId = uuidv4(),
-      timeoutMs,
-      onProgress,
-      stream = onProgress ? true : false
-    } = opts;
-    let { abortSignal } = opts;
-    let abortController = null;
-    if (timeoutMs && !abortSignal) {
-      abortController = new AbortController();
-      abortSignal = abortController.signal;
-    }
-    const message = {
-      role: "user",
-      id: messageId,
-      parentMessageId,
-      text
-    };
-    await this._upsertMessage(message);
-    const { messages, maxTokens, numTokens } = await this._buildMessages(
-      text,
-      opts
-    );
-    const result = {
-      role: "assistant",
-      id: uuidv4(),
-      parentMessageId: messageId,
-      text: ""
-    };
-    const responseP = new Promise(
-      async (resolve, reject) => {
-        var _a, _b;
-        const url = `${this._apiBaseUrl}/v1/chat/completions`;
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${this._apiKey}`
-        };
-        const body = {
-          max_tokens: maxTokens,
-          ...this._completionParams,
-          messages,
-          stream
-        };
-        if (this._debug) {
-          console.log(`sendMessage (${numTokens} tokens)`, body);
-        }
-        if (stream) {
-          fetchSSE(
-            url,
-            {
-              method: "POST",
-              headers,
-              body: JSON.stringify(body),
-              signal: abortSignal,
-              onMessage: (data) => {
-                var _a2;
-                if (data === "[DONE]") {
-                  result.text = result.text.trim();
-                  return resolve(result);
-                }
-                try {
-                  const response = JSON.parse(data);
-                  if (response.id) {
-                    result.id = response.id;
-                  }
-                  if ((_a2 = response == null ? void 0 : response.choices) == null ? void 0 : _a2.length) {
-                    const delta = response.choices[0].delta;
-                    result.delta = delta.content;
-                    if (delta == null ? void 0 : delta.content)
-                      result.text += delta.content;
-                    result.detail = response;
-                    if (delta.role) {
-                      result.role = delta.role;
-                    }
-                    onProgress == null ? void 0 : onProgress(result);
-                  }
-                } catch (err) {
-                  console.warn("OpenAI stream SEE event unexpected error", err);
-                  return reject(err);
-                }
-              }
-            },
-            this._fetch
-          ).catch(reject);
-        } else {
-          try {
-            const res = await this._fetch(url, {
-              method: "POST",
-              headers,
-              body: JSON.stringify(body),
-              signal: abortSignal
-            });
-            if (!res.ok) {
-              const reason = await res.text();
-              const msg = `OpenAI error ${res.status || res.statusText}: ${reason}`;
-              const error = new ChatGPTError(msg, { cause: res });
-              error.statusCode = res.status;
-              error.statusText = res.statusText;
-              return reject(error);
-            }
-            const response = await res.json();
-            if (this._debug) {
-              console.log(response);
-            }
-            if (response == null ? void 0 : response.id) {
-              result.id = response.id;
-            }
-            if ((_a = response == null ? void 0 : response.choices) == null ? void 0 : _a.length) {
-              const message2 = response.choices[0].message;
-              result.text = message2.content;
-              if (message2.role) {
-                result.role = message2.role;
-              }
-            } else {
-              const res2 = response;
-              return reject(
-                new Error(
-                  `OpenAI error: ${((_b = res2 == null ? void 0 : res2.detail) == null ? void 0 : _b.message) || (res2 == null ? void 0 : res2.detail) || "unknown"}`
-                )
-              );
-            }
-            result.detail = response;
-            return resolve(result);
-          } catch (err) {
-            return reject(err);
-          }
-        }
-      }
-    ).then((message2) => {
-      return this._upsertMessage(message2).then(() => message2);
-    });
-    if (timeoutMs) {
-      if (abortController) {
-        ;
-        responseP.cancel = () => {
-          abortController.abort();
-        };
-      }
-      // return pTimeout(responseP, {
-      //   milliseconds: timeoutMs,
-      //   message: "OpenAI timed out waiting for response"
-      // });
-    } else {
-      return responseP;
-    }
-  }
   get apiKey() {
-    return this._apiKey;
+    return this._apiKey
   }
+
   set apiKey(apiKey) {
-    this._apiKey = apiKey;
+    this._apiKey = apiKey
   }
+
   async _buildMessages(text, opts) {
     const { systemMessage = this._systemMessage } = opts;
     let { parentMessageId } = opts;
@@ -459,21 +203,22 @@ ${message.content}`]);
     );
     return { messages, maxTokens, numTokens };
   }
+
   async _getTokenCount(text) {
-    text = text.replace(/<\|endoftext\|>/g, "");
+    text = text.replace(/<\|endoftext\|>/g, "")
     return encode(text).length;
   }
+
   async _defaultGetMessageById(id) {
-    const res = await this._messageStore.get(id);
+    const res = await this._messageStore.get(id)
     return res;
   }
+
   async _defaultUpsertMessage(message) {
-    
-    await this._messageStore.set(message.id, message);
+    await this._messageStore.set(message.id, message)
   }
-};
+}
 
 export {
   ChatGPTAPI,
-  ChatGPTError,
-};
+}
