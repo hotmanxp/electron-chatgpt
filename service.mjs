@@ -1,10 +1,23 @@
-import electron  from 'electron'
+import electron from 'electron'
+
+import Store from 'electron-store'
 
 import { ChatGPTAPI } from './gpt.mjs'
 
-const { ipcMain } = electron
+// import * as fs from 'fs'
+// import * as path from 'path'
+// const dbPath = path.join(process.cwd(), '.db.json')
+// if(!fs.existsSync(dbPath)){
+//   fs.writeFileSync(dbPath, '')
+// }
 
-const apiKey = process.env.OPEN_AI_KEY
+
+
+const store = new Store()
+
+const apiKey = store.get('apiKey')
+
+const { ipcMain } = electron
 
 const gpt = new ChatGPTAPI({
   maxModelTokens: 4000,

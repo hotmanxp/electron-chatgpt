@@ -27,14 +27,15 @@
     "@dqbd/tiktoken": "^0.4.0",
     "cac": "^6.7.14",
     "chatgpt": "^5.0.9",
-    "conf": "^11.0.1",
+    "conf": "^10.2.0",
+    "electron-prompt": "^1.7.0",
+    "electron-store": "^8.1.0",
     "esm": "^3.2.25",
     "eventsource-parser": "^0.0.5",
+    "json-buffer": "^3.0.1",
     "keyv": "^4.5.2",
-    "node-fetch": "^3.3.0",
     "p-timeout": "^6.1.1",
     "quick-lru": "^6.1.1",
-    "read-pkg-up": "^9.1.0",
     "uuid": "^9.0.0"
   }
 }

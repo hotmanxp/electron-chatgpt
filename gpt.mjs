@@ -3,6 +3,9 @@ import * as uuid from "uuid"
 import * as tiktoken from "@dqbd/tiktoken"
 
 import QuickLRU from "./vendor/quick-lru"
+import promote from 'electron-prompt'
+import Store from'electron-store'
+const store = new Store();
 
 const uuidv4 = uuid.v4
 const { get_encoding } = tiktoken
@@ -74,9 +77,32 @@ Current date: ${currentDate}`
         store: new QuickLRU({ maxSize: 1e4 })
       })
     }
-    if (!this._apiKey) {
-      throw new Error("OpenAI missing required apiKey")
-    }
+    // if (!this._apiKey) {
+    //   throw new Error("OpenAI missing required apiKey")
+    // }
+
+
+  }
+
+  async getKey () {
+    if(this._apiKey) return this._apiKey
+    const key = await promote({
+      title: '输入OpenAI的key',
+      label: 'OpenAI Key',
+      value: '',  // 初始值
+      inputAttrs: { // 输入框属性
+        type: 'text'
+      },
+      minWidth: 800,
+      minHeight: 300,
+      type: 'input' // 输入框类型
+    })
+
+    store.set('apiKey', key)
+    this._apiKey = key
+
+    return key
+
   }
 
   async getMessages(text, opts = {}) {
@@ -87,6 +113,8 @@ Current date: ${currentDate}`
       // onProgress,
       // stream = onProgress ? true : false
     } = opts;
+
+    const apiKey = await this.getKey()
  
     const message = {
       role: "user",
@@ -104,7 +132,7 @@ Current date: ${currentDate}`
 
     const headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${this._apiKey}`
+      Authorization: `Bearer ${apiKey}`
     };
     const body = {
       max_tokens: maxTokens,
