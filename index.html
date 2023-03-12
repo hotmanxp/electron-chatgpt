@@ -8,7 +8,13 @@
     <script src="./vendor/hljs.js"></script>
     <script src="./vendor/marked.min.4.2.12.js"></script>
     <title>ChatGPT World!</title>
+    <script>
+      window.addEventListener('error', function(event) {
+        window.alert(`Error occurred:  ${event.message}`);
+      });
+    </script>
   </head>
+  
   <body>
     <div class="header">
       <h3>Welcome to ChatGPT World</h3>

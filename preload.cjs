@@ -6,10 +6,8 @@
  * https://www.electronjs.org/docs/latest/tutorial/sandbox
  */
 
-
-
 const { ipcRenderer } = require('electron')
 
-window.callAppHanddle = async (message) => {
+window.callAppHandle = async (message) => {
   return await ipcRenderer.invoke('fetchMessage', message)
 }

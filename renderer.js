@@ -6,9 +6,17 @@
  * to expose Node.js functionality from the main process.
  */
 
-const CHATGPT_MODEL = 'gpt-3.5-turbo'
-const url = 'https://api.openai.com/v1/chat/completions'
 let lastMessageId = null
+const url = 'https://api.openai.com/v1/chat/completions'
+
+const setLoading = (loading) => {
+  const loadingEle = document.getElementById('global-loading')
+  if(loading) {
+    loadingEle.classList.add('loading')
+  } else {
+    loadingEle.classList.remove('loading')
+  }
+}
 
 const insertLog = (log) => {
   const ele = document.getElementById('res-contain')
@@ -21,7 +29,6 @@ const insertLog = (log) => {
     <div class="log-text">${htmlContent}</div>
   </div>
 `
-
   ele.appendChild(logEle)
   // Highlight code blocks using hljs
   document.querySelectorAll('pre code').forEach((block) => {
@@ -30,55 +37,56 @@ const insertLog = (log) => {
   ele.scrollTo(0, ele.scrollHeight - ele.clientHeight)
 }
 
+const sendMsgToApp = async (message) => {
+  if(!window.callAppHandle) return
+  return window.callAppHandle(JSON.stringify(message))
+}
+
 const ask = async (prompt) => {
+  if(!window.callAppHandle) return
+  const fetchOptions = await sendMsgToApp({
+    type: 'getFetchParams',
+    params: { text: prompt, parentMessageId: lastMessageId }
+  })
 
-  if(window.callAppHanddle) {
-    const message = JSON.stringify({
-      type: 'getFetchParams',
-      params: { text: prompt, parentMessageId: lastMessageId }
+  insertLog({name: 'Me', content: prompt})
+
+  fetch(url, {
+    headers: fetchOptions.headers,
+    method: 'POST',
+    body: JSON.stringify(fetchOptions.body)
+  })
+    .then(res => res.json())
+    .then(res => {
+      lastMessageId = res.id
+      const reply = res.choices[0].message
+      window.callAppHandle(JSON.stringify({type :'setRes', params: {id: res.id, ...reply}}))
+      setLoading(false)
+      insertLog({...reply, name: 'ChatGPT'})
     })
+    .catch(e => {
+      console.log('接口调用错误: ', e)
+      setLoading(false)
+      window.alert(`网络错误${e}`)
 
-    const fetchOptions = await window.callAppHanddle(message)
-      insertLog({name: 'Me', content: prompt})
-      fetch(url, {
-        headers: fetchOptions.headers,
-        method: 'POST',
-        body: JSON.stringify(fetchOptions.body)
-      })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        lastMessageId = res.id
-        const reply = res.choices[0].message
-        window.callAppHanddle(JSON.stringify({type :'setRes', params: {id: res.id, ...reply}}))
-
-        document.getElementById('global-loading').classList.remove('loading')
-        insertLog({...reply, name: 'ChatGPT'})
-      })
-      .catch(e => {
-        console.log(e)
-        document.getElementById('global-loading').classList.remove('loading')
-        window.alert(`网络错误${e}`)
-
-      })
-
-    return
-  }
+    })
+  return
 }
 
 const inputEle = document.getElementById('input-el')
 
-const promte = async () => {
+const promote = async () => {
   const inputText = inputEle.value
   inputEle.value = ''
-  document.getElementById('global-loading').classList.add('loading')
+  setLoading(true)
   await ask(inputText)
 }
 
-document.getElementById('ask-button').addEventListener('click', promte)
+document.getElementById('ask-button').addEventListener('click', promote)
+
 inputEle.addEventListener('keyup', (ev) => {
   if(ev.code == 'Enter') {
-    promte()
+    promote()
   }
 })
 
