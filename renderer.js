@@ -18,6 +18,17 @@ const setLoading = (loading) => {
   }
 }
 
+const scrollLastToTop = () => {
+  const targetY = 145
+  const containnerEle = document.getElementById('res-contain')
+  const logList = document.querySelectorAll('.talk-container')
+  if(logList.length === 0) return
+  const lastLogDiv = logList[logList.length - 1]
+  const rect = lastLogDiv.getBoundingClientRect()
+  const distance = rect.y - targetY
+  containnerEle.scrollTo(0, containnerEle.scrollTop + distance)
+}
+
 const insertLog = (log) => {
   const ele = document.getElementById('res-contain')
   const htmlContent = window.marked.marked(log.content);
@@ -34,7 +45,8 @@ const insertLog = (log) => {
   document.querySelectorAll('pre code').forEach((block) => {
     hljs.highlightBlock(block);
   });
-  ele.scrollTo(0, ele.scrollHeight - ele.clientHeight)
+  // ele.scrollTo(0, ele.scrollHeight - ele.clientHeight)
+  scrollLastToTop()
 }
 
 const sendMsgToApp = async (message) => {
