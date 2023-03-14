@@ -520,7 +520,7 @@ chalk@^4.0.2, chalk@^4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chatgpt@^5.0.9:
+chatgpt@^5.0.10:
   version "5.0.10"
   resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.0.10.tgz#ecddf446df23353642ccfe9e0d370b55dd0212f8"
   integrity sha512-R3vtPlhCapFLkDXED0Cnt1DBcOZAXygr0M5U5kbSI0Fwm4uDQmc7qoIOnr17rd8eaa0JO/UDOevJdEWvd079qA==
