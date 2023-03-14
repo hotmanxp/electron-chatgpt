@@ -934,6 +934,11 @@ eventsource-parser@^0.0.5:
   resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-0.0.5.tgz#6041bf765ebced8ac83de9dc78754b7b919b7342"
   integrity sha512-BAq82bC3ZW9fPYYZlofXBOAfbpmDzXIOsj+GOehQwgTUYsQZ6HtHs6zuRtge7Ph8OhS6lNH1kJF8q9dj17RcmA==
 
+eventsource-parser@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-0.1.0.tgz#4a6b84751ca8e704040e6f7f50e7d77344fa1b7c"
+  integrity sha512-M9QjFtEIkwytUarnx113HGmgtk52LSn3jNAtnWKi3V+b9rqSfQeVdLsaD5AG/O4IrGQwmAAHBIsqbmURPTd2rA==
+
 extract-zip@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/extract-zip/-/extract-zip-2.0.1.tgz#663dca56fe46df890d5f131ef4a06d22bb8ba13a"
