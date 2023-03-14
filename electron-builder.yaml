@@ -1,6 +1,12 @@
 # electron-builder.yaml
 appId: com.example.my-electron-app
 productName: ChatGPT
+files:
+  - package.json
+  - index.cjs
+  - src/**/*
+
+
 directories:
   output: dist
 mac:

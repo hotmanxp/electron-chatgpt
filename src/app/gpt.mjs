@@ -2,7 +2,7 @@ import Keyv from "keyv"
 import * as uuid from "uuid"
 import * as tiktoken from "@dqbd/tiktoken"
 
-import QuickLRU from "./vendor/quick-lru"
+import QuickLRU from "../vendor/quick-lru"
 import promote from 'electron-prompt'
 import Store from'electron-store'
 const store = new Store();

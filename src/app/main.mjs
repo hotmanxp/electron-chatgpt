@@ -14,13 +14,13 @@ function createWindow () {
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
-      preload: path.join(app.getAppPath(), 'preload.cjs')
+      preload: path.join(app.getAppPath(), 'src/app/preload.cjs')
     }
   })
 
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('src/view/index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
