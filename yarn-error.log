@@ -1,0 +1,66 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Users/ethan/Library/pnpm:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/ethan/miniconda3/bin:/Users/ethan/miniconda3/condabin:/Users/ethan/Library/pnpm:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/ethan/.cargo/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.16.0
+
+Platform: 
+  darwin arm64
+
+Trace: 
+  Error: EEXIST: file already exists, mkdir '/Users/ethan/code/electron-chatgpt/node_modules/@babel/highlight/node_modules'
+
+npm manifest: 
+  {
+    "name": "electron-quick-start",
+    "version": "1.0.0",
+    "description": "A minimal Electron application",
+    "type": "module",
+    "main": "index.cjs",
+    "module": "main.cjs",
+    "scripts": {
+      "start": "electron .",
+      "build": "electron-builder"
+    },
+    "repository": "https://github.com/electron/electron-quick-start",
+    "keywords": [
+      "Electron",
+      "quick",
+      "start",
+      "tutorial",
+      "demo"
+    ],
+    "author": "GitHub",
+    "license": "CC0-1.0",
+    "devDependencies": {
+      "electron": "^23.1.2",
+      "electron-builder": "^23.6.0"
+    },
+    "dependencies": {
+      "@dqbd/tiktoken": "^0.4.0",
+      "cac": "^6.7.14",
+      "chatgpt": "^5.0.9",
+      "conf": "^10.2.0",
+      "electron-prompt": "^1.7.0",
+      "electron-store": "^8.1.0",
+      "esm": "^3.2.25",
+      "eventsource-parser": "^0.0.5",
+      "json-buffer": "^3.0.1",
+      "keyv": "^4.5.2",
+      "p-timeout": "^6.1.1",
+      "quick-lru": "^6.1.1",
+      "uuid": "^9.0.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
