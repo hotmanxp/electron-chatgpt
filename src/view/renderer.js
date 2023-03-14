@@ -6,8 +6,16 @@
  * to expose Node.js functionality from the main process.
  */
 
+let lastFetchOptions = null
+
 let lastMessageId = null
 const url = 'https://api.openai.com/v1/chat/completions'
+
+const ROLE_TYPE = {
+  ME: 'Me',
+  SYS: 'System',
+  GPT: 'ChatGPT'
+}
 
 const setLoading = (loading) => {
   const loadingEle = document.getElementById('global-loading')
@@ -32,9 +40,9 @@ const scrollLastToTop = () => {
 const insertLog = (log) => {
   const ele = document.getElementById('res-contain')
   const htmlContent = window.marked.marked(log.content);
-  const isMe = log.name === 'Me'
+  const isMe = log.name === ROLE_TYPE.ME
   const logEle = document.createElement('div')
-  logEle.className = 'talk-container'
+  logEle.className = `talk-container ${log.name}-wrap`
   logEle.innerHTML = `<div class="${isMe ? 'me': 'gpt'}">
     <div class="bg" >${log.name}</div>
     <div class="log-text">${htmlContent}</div>
@@ -49,19 +57,41 @@ const insertLog = (log) => {
   scrollLastToTop()
 }
 
+const removeLog = (logType) => {
+  const dom = document.querySelector(`.${logType}-wrap`)
+  if(!dom) return
+  dom.parentElement.removeChild(dom)
+}
+
+const insertRetry = () => {
+  insertLog({name: 'System', content: `<div >
+  <div class="error-msg">Network Error, click btn to retry:</div>
+  <div class="retry-btn btn">Retry</div>
+  </div>` })
+}
+
 const sendMsgToApp = async (message) => {
   if(!window.callAppHandle) return
   return window.callAppHandle(JSON.stringify(message))
 }
 
-const ask = async (prompt) => {
+const ask = async (prompt, isRetry) => {
   if(!window.callAppHandle) return
-  const fetchOptions = await sendMsgToApp({
-    type: 'getFetchParams',
-    params: { text: prompt, parentMessageId: lastMessageId }
-  })
+  setLoading(true)
+  let fetchOptions
+  if(isRetry && lastFetchOptions) {
+    fetchOptions = lastFetchOptions
+    removeLog(ROLE_TYPE.SYS)
 
-  insertLog({name: 'Me', content: prompt})
+  } else {
+    fetchOptions = await sendMsgToApp({
+      type: 'getFetchParams',
+      params: { text: prompt, parentMessageId: lastMessageId }
+    })
+    insertLog({name: ROLE_TYPE.ME, content: prompt})
+  }
+
+  lastFetchOptions = fetchOptions
 
   fetch(url, {
     headers: fetchOptions.headers,
@@ -74,12 +104,13 @@ const ask = async (prompt) => {
       const reply = res.choices[0].message
       window.callAppHandle(JSON.stringify({type :'setRes', params: {id: res.id, ...reply}}))
       setLoading(false)
-      insertLog({...reply, name: 'ChatGPT'})
+      insertLog({...reply, name: ROLE_TYPE.GPT})
     })
     .catch(e => {
       console.log('接口调用错误: ', e)
       setLoading(false)
-      window.alert(`网络错误${e}`)
+      // window.alert(`网络错误${e}`)
+      insertRetry()
 
     })
   return
@@ -90,7 +121,6 @@ const inputEle = document.getElementById('input-el')
 const promote = async () => {
   const inputText = inputEle.value
   inputEle.value = ''
-  setLoading(true)
   await ask(inputText)
 }
 
@@ -107,6 +137,12 @@ document.getElementById('setting-el').addEventListener('click', () => {
     type: 'openSetting',
     params: {}
   })
+})
+
+document.getElementById('res-contain').addEventListener('click', (e) => {
+  if(e.target.className.indexOf('retry-btn') > -1) {
+    ask('', true)
+  }
 })
 
 
