@@ -16,6 +16,20 @@
   font-weight: 600;
 }
 
+.setting-el {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  width: 80px;
+  line-height: 24px;
+  background-color: #1f7199;
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 input {
   width: calc(100vw - 250px);
   /* margin-left: 20px; */

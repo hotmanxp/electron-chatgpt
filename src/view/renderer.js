@@ -102,3 +102,11 @@ inputEle.addEventListener('keyup', (ev) => {
   }
 })
 
+document.getElementById('setting-el').addEventListener('click', () => {
+  sendMsgToApp({
+    type: 'openSetting',
+    params: {}
+  })
+})
+
+

@@ -3,6 +3,7 @@ import electron from 'electron'
 import Store from 'electron-store'
 
 import { ChatGPTAPI } from './gpt.mjs'
+import { promoteKeySetting } from './utils.mjs'
 
 // import * as fs from 'fs'
 // import * as path from 'path'
@@ -37,6 +38,10 @@ ipcMain.handle('fetchMessage', async (e, message) => {
 
   if(type === 'setRes') {
     return await gpt.setRes(params)
+  }
+
+  if(type === 'openSetting') {
+    return await promoteKeySetting()
   }
   
 })

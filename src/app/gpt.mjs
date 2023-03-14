@@ -3,9 +3,8 @@ import * as uuid from "uuid"
 import * as tiktoken from "@dqbd/tiktoken"
 
 import QuickLRU from "../vendor/quick-lru"
-import promote from 'electron-prompt'
-import Store from'electron-store'
-const store = new Store();
+
+import { promoteKeySetting } from './utils.mjs'
 
 const uuidv4 = uuid.v4
 const { get_encoding } = tiktoken
@@ -86,21 +85,8 @@ Current date: ${currentDate}`
 
   async getKey () {
     if(this._apiKey) return this._apiKey
-    const key = await promote({
-      title: '输入OpenAI的key',
-      label: 'OpenAI Key',
-      value: '',  // 初始值
-      inputAttrs: { // 输入框属性
-        type: 'text'
-      },
-      minWidth: 800,
-      minHeight: 300,
-      type: 'input' // 输入框类型
-    })
-
-    store.set('apiKey', key)
+    const key = await promoteKeySetting()
     this._apiKey = key
-
     return key
 
   }
