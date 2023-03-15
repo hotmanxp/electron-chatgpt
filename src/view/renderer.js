@@ -145,4 +145,9 @@ document.getElementById('res-contain').addEventListener('click', (e) => {
   }
 })
 
+sendMsgToApp({
+  type: 'resetApp',
+  params: {}
+})
+
 

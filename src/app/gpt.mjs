@@ -233,6 +233,12 @@ ${message.content}`]);
   }
 }
 
+const resetStatus = () => {
+  lastSentMessageId = null
+  lastRespondMessageId = null
+}
+
 export {
   ChatGPTAPI,
+  resetStatus
 }

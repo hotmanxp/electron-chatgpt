@@ -2,7 +2,7 @@ import electron from 'electron'
 
 import Store from 'electron-store'
 
-import { ChatGPTAPI } from './gpt.mjs'
+import { ChatGPTAPI, resetStatus } from './gpt.mjs'
 import { promoteKeySetting } from './utils.mjs'
 
 // import * as fs from 'fs'
@@ -42,6 +42,10 @@ ipcMain.handle('fetchMessage', async (e, message) => {
 
   if(type === 'openSetting') {
     return await promoteKeySetting()
+  }
+
+  if(type === 'resetApp') {
+    return await resetStatus()
   }
   
 })
