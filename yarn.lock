@@ -520,10 +520,10 @@ chalk@^4.0.2, chalk@^4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chatgpt@^5.0.9:
-  version "5.0.10"
-  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.0.10.tgz#ecddf446df23353642ccfe9e0d370b55dd0212f8"
-  integrity sha512-R3vtPlhCapFLkDXED0Cnt1DBcOZAXygr0M5U5kbSI0Fwm4uDQmc7qoIOnr17rd8eaa0JO/UDOevJdEWvd079qA==
+chatgpt@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.1.1.tgz#981dba33286cd96ec694972f3532d2d4a7850c88"
+  integrity sha512-ml1u4/KqXdAKfaRwqE0uvRTh5JoRgosstH2LF4PpsawG7MUtIzAVaE/MMEAaV02uGbOlAH4IgKI3mDHkQ0Dmlw==
   dependencies:
     "@dqbd/tiktoken" "^0.4.0"
     cac "^6.7.14"
