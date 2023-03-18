@@ -3,7 +3,7 @@
 /* Add styles here to customize the appearance of your app */
 
 ::-webkit-scrollbar {
-  /* width: 8px; */
+  width: 0px;
   /* 设置滚动条宽度 */
 }
 
