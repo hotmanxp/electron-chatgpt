@@ -27,7 +27,7 @@ const setLoading = (loading) => {
 }
 
 const scrollLastToTop = () => {
-  const targetY = 145
+  const targetY = 76
   const containnerEle = document.getElementById('res-contain')
   const logList = document.querySelectorAll('.talk-container')
   if(logList.length === 0) return
