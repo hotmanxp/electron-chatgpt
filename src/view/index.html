@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"> -->
+    <link href="../vendor/materialize.min.css" rel="stylesheet">
     <link href="./styles.css" rel="stylesheet">
-    <script src="../vendor/hljs.js"></script>
-    <script src="../vendor/marked.min.4.2.12.js"></script>
+
     <title>ChatGPT World!</title>
     <script>
       window.addEventListener('error', function(event) {
@@ -16,21 +16,25 @@
   </head>
   
   <body>
-    <div id="setting-el" class="setting-el btn">Setting</div>
+    <div id="setting-el" class="setting-el btn btn-small">Setting</div>
     <div class="header">
-      <h3>Welcome to ChatGPT World</h3>
+      <h5>Welcome to ChatGPT World</h5>
     </div>   
     <div id="res-contain" class="hljs language-markdown logContainer"></div>
     <div class="action-div">
       <span class="tips">提问: </span>
       <input id="input-el" placeholder="Input Your Question" value="" />
-      <button id="ask-button">Send</button>
+      <button id="ask-button" class="btn send-btn">Send</button>
     </div>
     <div id="global-loading">
       <div class="spinner"></div>
     </div>
     
     <!-- You can also require other files to run in this process -->
+    <script src="../vendor/materialize.min.js"></script>
+    <script src="../vendor/hljs.js"></script>
+    <script src="../vendor/marked.min.4.2.12.js"></script>
     <script src="./renderer.js"></script>
+
   </body>
 </html>
