@@ -31,7 +31,7 @@
     "electron-prompt": "^1.7.0",
     "electron-store": "^8.1.0",
     "esm": "^3.2.25",
-    "eventsource-parser": "^0.0.5",
+    "eventsource-parser": "^1.0.0",
     "json-buffer": "^3.0.1",
     "keyv": "^4.5.2",
     "p-timeout": "^6.1.1",
