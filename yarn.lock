@@ -41,6 +41,11 @@
   resolved "https://registry.npmmirror.com/@dqbd/tiktoken/-/tiktoken-0.4.0.tgz#070e770ae3fa3fa8fccbea4f2e02ab87117f6c3a"
   integrity sha512-iaHgmwKAOqowBFZKxelyszoeGLoNw62eOULcmyme1aA1Ymr3JgYl0V7jwpuUm7fksalycZajx3loFn9TRUaviw==
 
+"@dqbd/tiktoken@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmmirror.com/@dqbd/tiktoken/-/tiktoken-1.0.2.tgz#f180afc887426343bab2adc41106d04dbd3627c0"
+  integrity sha512-AjGTBRWsMoVmVeN55NLyupyM8TNamOUBl6tj5t/leLDVup3CFGO9tVagNL1jf3GyZLkWZSTmYVbPQ/M2LEcNzw==
+
 "@electron/get@^2.0.0":
   version "2.0.2"
   resolved "https://registry.npmmirror.com/@electron/get/-/get-2.0.2.tgz#ae2a967b22075e9c25aaf00d5941cd79c21efd7e"
@@ -520,15 +525,15 @@ chalk@^4.0.2, chalk@^4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chatgpt@^5.0.9:
-  version "5.0.10"
-  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.0.10.tgz#ecddf446df23353642ccfe9e0d370b55dd0212f8"
-  integrity sha512-R3vtPlhCapFLkDXED0Cnt1DBcOZAXygr0M5U5kbSI0Fwm4uDQmc7qoIOnr17rd8eaa0JO/UDOevJdEWvd079qA==
+chatgpt@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.2.2.tgz#b9fc23bf137eab027becd49f2460a2754b3aae3e"
+  integrity sha512-6HVueHj7ghJtcsBHi8CfXCC5fbCXJMc29NSGluTcg/2yLo0Jla3Wm/dlcz3cIb+7KVBKD5b6Qz5bVu8XFEF7Sg==
   dependencies:
-    "@dqbd/tiktoken" "^0.4.0"
+    "@dqbd/tiktoken" "^1.0.2"
     cac "^6.7.14"
     conf "^11.0.1"
-    eventsource-parser "^0.0.5"
+    eventsource-parser "^1.0.0"
     keyv "^4.5.2"
     p-timeout "^6.1.1"
     quick-lru "^6.1.1"
@@ -933,6 +938,11 @@ eventsource-parser@^0.0.5:
   version "0.0.5"
   resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-0.0.5.tgz#6041bf765ebced8ac83de9dc78754b7b919b7342"
   integrity sha512-BAq82bC3ZW9fPYYZlofXBOAfbpmDzXIOsj+GOehQwgTUYsQZ6HtHs6zuRtge7Ph8OhS6lNH1kJF8q9dj17RcmA==
+
+eventsource-parser@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-1.0.0.tgz#6332e37fd5512e3c8d9df05773b2bf9e152ccc04"
+  integrity sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==
 
 extract-zip@^2.0.1:
   version "2.0.1"
