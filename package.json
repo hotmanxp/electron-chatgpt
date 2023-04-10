@@ -24,7 +24,7 @@
     "electron-builder": "^23.6.0"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^0.4.0",
+    "@dqbd/tiktoken": "^1.0.4",
     "cac": "^6.7.14",
     "chatgpt": "^5.0.9",
     "conf": "^10.2.0",
