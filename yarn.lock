@@ -41,6 +41,11 @@
   resolved "https://registry.npmmirror.com/@dqbd/tiktoken/-/tiktoken-0.4.0.tgz#070e770ae3fa3fa8fccbea4f2e02ab87117f6c3a"
   integrity sha512-iaHgmwKAOqowBFZKxelyszoeGLoNw62eOULcmyme1aA1Ymr3JgYl0V7jwpuUm7fksalycZajx3loFn9TRUaviw==
 
+"@dqbd/tiktoken@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.npmmirror.com/@dqbd/tiktoken/-/tiktoken-1.0.7.tgz#612871cf91eba5599c804f100c573aa4d8596f57"
+  integrity sha512-bhR5k5W+8GLzysjk8zTMVygQZsgvf7W1F0IlL4ZQ5ugjo5rCyiwGM5d8DYriXspytfu98tv59niang3/T+FoDw==
+
 "@electron/get@^2.0.0":
   version "2.0.2"
   resolved "https://registry.npmmirror.com/@electron/get/-/get-2.0.2.tgz#ae2a967b22075e9c25aaf00d5941cd79c21efd7e"
