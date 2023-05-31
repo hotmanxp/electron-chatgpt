@@ -520,15 +520,15 @@ chalk@^4.0.2, chalk@^4.1.1:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chatgpt@^5.0.9:
-  version "5.0.10"
-  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.0.10.tgz#ecddf446df23353642ccfe9e0d370b55dd0212f8"
-  integrity sha512-R3vtPlhCapFLkDXED0Cnt1DBcOZAXygr0M5U5kbSI0Fwm4uDQmc7qoIOnr17rd8eaa0JO/UDOevJdEWvd079qA==
+chatgpt@^5.2.5:
+  version "5.2.5"
+  resolved "https://registry.npmmirror.com/chatgpt/-/chatgpt-5.2.5.tgz#6a9f951fd58d8501ff0384a338eacdc0e3d8544f"
+  integrity sha512-DNhBzPb2zTDjJADY44XfngMvsvrvHRq1md2VPXLmnKeP1UCeA1B6pV3s9ZRwlcgjVT0RyM77fRj1xj5V11Vctg==
   dependencies:
-    "@dqbd/tiktoken" "^0.4.0"
     cac "^6.7.14"
     conf "^11.0.1"
-    eventsource-parser "^0.0.5"
+    eventsource-parser "^1.0.0"
+    js-tiktoken "^1.0.5"
     keyv "^4.5.2"
     p-timeout "^6.1.1"
     quick-lru "^6.1.1"
@@ -934,6 +934,11 @@ eventsource-parser@^0.0.5:
   resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-0.0.5.tgz#6041bf765ebced8ac83de9dc78754b7b919b7342"
   integrity sha512-BAq82bC3ZW9fPYYZlofXBOAfbpmDzXIOsj+GOehQwgTUYsQZ6HtHs6zuRtge7Ph8OhS6lNH1kJF8q9dj17RcmA==
 
+eventsource-parser@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-1.0.0.tgz#6332e37fd5512e3c8d9df05773b2bf9e152ccc04"
+  integrity sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==
+
 extract-zip@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/extract-zip/-/extract-zip-2.0.1.tgz#663dca56fe46df890d5f131ef4a06d22bb8ba13a"
@@ -1276,6 +1281,13 @@ jake@^10.8.5:
     chalk "^4.0.2"
     filelist "^1.0.1"
     minimatch "^3.0.4"
+
+js-tiktoken@^1.0.5:
+  version "1.0.6"
+  resolved "https://registry.npmmirror.com/js-tiktoken/-/js-tiktoken-1.0.6.tgz#f32f4b9b3c33d11f12b5cf016b3c729370817ee9"
+  integrity sha512-lxHntEupgjWvSh37WxpAW4XN6UBXBtFJOpZZq5HN5oNjDfN7L/iJhHOKjyL/DFtuYXUwn5jfTciLtOWpgQmHjQ==
+  dependencies:
+    base64-js "^1.5.1"
 
 js-tokens@^4.0.0:
   version "4.0.0"
